@@ -1,8 +1,8 @@
 # MySpringMVC
 ## 实现
 
-1. 配置文件加载，指定需要扫描的包的包名
-2. LoadBeans
+### 1. 配置文件加载，指定需要扫描的包的包名
+### 2. LoadBeans
 
 - 根据包名扫描包下所有的类，递归调用
   `private void loadClass(String packageName)`  
@@ -10,12 +10,12 @@
   `Object instance= cla.getDeclaredConstructor().newInstance(); ` 
   `addBean(beanName, instance);`  
 
-3. IOC自动注入
+### 3. IOC自动注入
 
 - 遍历IOC Map，获取其成员变量
 - 将带有AutoWired注解的变量赋值
 
-4. HandlerMapping
+### 4. HandlerMapping
 
 - 初始化HandlerMapping，遍历IOC Map中的Values值（已经实例化的Beans）
 - 筛选带有MyRequestMapping注解的对象，取出其中baseUrl
@@ -24,7 +24,7 @@
 - 针对该方法取出其请求返回类型ResponseType、该方法所在的类cla和该方法本身method，共同构造MVCMapping，作为value值
 - 将上述key和value加入HandlerMapping中
 
-5. MySpringMVCServlet处理用户请求的URL
+### 5. MySpringMVCServlet处理用户请求的URL
 
 - 获取用户请求的Url信息（包括URL路径，以及请求的方法）
 - 根据获得的信息构造UrlAndMethod类，作为handlemapping的key
@@ -34,13 +34,13 @@
   - 通过getParameterTypes、getParameterMap函数获得请求参数的类型与值，并存至parameterValues
   - 通过method.invoke函数得到请求的执行结果，并根据注解定义的responseType进行视图渲染
 
-6. 视图渲染
+### 6. 视图渲染
 
 - 若返回类型是responseBody，将对象自动转为JSON格式，以流的形式写回 
 - 若返回类型是responseView，则将结果转化为modelView，取出其中的model，使用request.setAttribute，添加model数据；取出其中的view来转发到对应的jsp
   tRequestDispatcher("/WEB-INF/" + modelView.getView() +".jsp").forward(req, resp);  
 
-7. 文件上传
+### 7. 文件上传
 
 获取request中POST方式中包含的文件信息，转化为FileItem类，传入upload函数中，指定文件存储目录；调用。write方法保存为本地文件；返回上传成功的信息
 
