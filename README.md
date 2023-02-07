@@ -1,4 +1,43 @@
 # MySpringMVC
+
+## 使用
+
+返回JSP页面的示例
+```java
+@MyController
+@MyRequestMapping("/app")
+public class AppController {
+    // 自动依赖注入
+    @MyAutowired
+    private BookService bookService;
+    @MyRequestMapping(value = "/bookpage", method = "GET") // GET 方法 
+    @ResponseView
+    public MyModelView showBookPage(){
+        MyModelView modelView = new MyModelView();
+        List<Book> bookList = bookService.getAllBooks();
+        modelView.setView("bookinfo");
+        modelView.addModel("bookList", bookList);
+        return modelView;
+    }
+}
+```
+根据Rest API返回Json的示例
+```java
+@MyController
+@MyRequestMapping("/api")
+public class RestController {
+    @MyAutowired
+    private BookService bookService;
+    @MyRequestMapping(value = "/book", method = "GET")
+    @ResponseBody
+    public Book getBook(@MyRequestParam("id") String sid){
+        int id = Integer.parseInt(sid);
+        return bookService.getBookById(id);
+    }
+}
+```
+
+
 ## 实现
 
 ### 1. 配置文件加载，指定需要扫描的包的包名
